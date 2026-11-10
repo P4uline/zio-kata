@@ -1,4 +1,4 @@
-package fr.kata.p4uline.zio
+package fr.p4uline.kata.zio
 
 import zio._
 import zhttp.http._
@@ -30,7 +30,7 @@ object ZIOHttpKata extends ZIOAppDefault {
     _ <- Console.printLine(s"Stating server at http://localhost:$port")
     _ <- Server.start(port, loggingHttp)
   } yield ()
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] =
+  override def run: ZIO[Any & ZIOAppArgs & Scope, Any, Any] =
     httpProgram
 }
 // request => contramap => http application => response => map => final response

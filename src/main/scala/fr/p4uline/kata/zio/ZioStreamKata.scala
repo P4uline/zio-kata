@@ -1,4 +1,4 @@
-package fr.kata.p4uline.zio
+package fr.p4uline.kata.zio
 
 import zio._
 import zio.stream._
@@ -34,6 +34,6 @@ object ZioStreamKata extends ZIOAppDefault {
 
   val zio_v3: ZIO[Any, Nothing, Int] = stringStream.via(appLogic).run(sum)
 
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = zio_v3.debug
+  override def run: ZIO[Any & ZIOAppArgs & Scope, Any, Any] = zio_v3.debug
 
 }
