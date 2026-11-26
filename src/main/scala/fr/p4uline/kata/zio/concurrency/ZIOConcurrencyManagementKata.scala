@@ -68,12 +68,22 @@ class UserDashboardServiceImpl(
       userId: Long
   ): zio.IO[DashboardError, UserDashboard] = {
     // FIXME do it parallel not sequential
+    /*
+    // find orders and find notifications sequentially
     for {
       user <- userRepository.findUser(123L)
       orders <- orderRepository.findOrders(user.id)
       notifications <- notificationRepository.findNotifications(user.id)
     } yield {
       UserDashboard(user = user, orders = orders, notifications = notifications)
+    }*/
+
+    // find orders and find notifications in parallel
+    for {
+      user <- userRepository.findUser(123L)
+      task <- orderRepository.findOrders(user.id).zipPar(notificationRepository.findNotifications(user.id))
+    } yield {
+      UserDashboard(user = user, orders = task._1, notifications = task._2)
     }
   }
 }
